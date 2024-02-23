@@ -1,0 +1,386 @@
+ex.01 Use case
+--------------------------------
+  using System;
+using System.Collections.Generic;
+
+namespace ex._01_Use_case
+{
+        class Program
+    {
+        static void Main(string[] args)
+        {
+            Library library = new Library();
+
+            // Добавяне на няколко примерни книги
+            library.AddBook(new Book("12345", "Завръщане към Бъдещето", "Робърт Земекис"));
+            library.AddBook(new Book("67890", "Грозде на гнева", "Джон Стайнбек"));
+
+            // Търсене на книга по ISBN
+            Console.WriteLine("Търсене на книга по ISBN:");
+            Book foundBook = library.FindBook("12345");
+            if (foundBook != null)
+            {
+                Console.WriteLine($"Намерена книга: {foundBook.Title} от {foundBook.Author}");
+            }
+            else
+            {
+                Console.WriteLine("Книга не е намерена.");
+            }
+
+            // Изтриване на книга по ISBN
+            Console.WriteLine("\nИзтриване на книга по ISBN:");
+            library.RemoveBook("12345");
+            foundBook = library.FindBook("12345");
+            if (foundBook == null)
+            {
+                Console.WriteLine("Книгата е успешно изтрита от библиотеката.");
+            }
+
+            Console.ReadLine();
+        }
+    }
+
+    // Клас за книга
+    class Book
+    {
+        public string ISBN { get; set; }
+        public string Title { get; set; }
+        public string Author { get; set; }
+
+        public Book(string isbn, string title, string author)
+        {
+            ISBN = isbn;
+            Title = title;
+            Author = author;
+        }
+    }
+
+    // Клас за библиотека
+    class Library
+    {
+        private List<Book> books;
+
+        public Library()
+        {
+            books = new List<Book>();
+        }
+
+        public void AddBook(Book book)
+        {
+            books.Add(book);
+            Console.WriteLine($"Книгата '{book.Title}' е добавена успешно в библиотеката.");
+        }
+
+        public Book FindBook(string isbn)
+        {
+            return books.Find(book => book.ISBN == isbn);
+        }
+
+        public void RemoveBook(string isbn)
+        {
+            Book bookToRemove = FindBook(isbn);
+            if (bookToRemove != null)
+            {
+                books.Remove(bookToRemove);
+            }
+        }
+    }
+}
+
+-----------------------------------------------------------------
+  ex.02 User story
+-----------------------------------------------------------------
+  using System;
+using System.Collections.Generic;
+
+namespace ex._02_User_story
+{
+    namespace LibrarySystem
+    {
+        class Program
+        {
+            static void Main(string[] args)
+            {
+                Library library = new Library();
+
+                Console.WriteLine("Добре дошли в библиотеката!");
+                Console.WriteLine("Моля, въведете данните за новата книга:");
+
+                Console.Write("ISBN: ");
+                string isbn = Console.ReadLine();
+
+                Console.Write("Заглавие: ");
+                string title = Console.ReadLine();
+
+                Console.Write("Автор: ");
+                string author = Console.ReadLine();
+
+                Book newBook = new Book(isbn, title, author);
+                library.AddBook(newBook);
+
+                Console.WriteLine("Книгата е успешно добавена в библиотеката!");
+                Console.ReadLine();
+            }
+        }
+
+        // Клас за книга
+        class Book
+        {
+            public string ISBN { get; set; }
+            public string Title { get; set; }
+            public string Author { get; set; }
+
+            public Book(string isbn, string title, string author)
+            {
+                ISBN = isbn;
+                Title = title;
+                Author = author;
+            }
+        }
+
+        // Клас за библиотека
+        class Library
+        {
+            private List<Book> books;
+
+            public Library()
+            {
+                books = new List<Book>();
+            }
+
+            public void AddBook(Book book)
+            {
+                books.Add(book);
+            }
+        }
+    }
+}
+
+---------------------------------------------------
+  ex.03 SRC
+---------------------------------------------------
+  using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace ex._03_SRC
+{
+        class Program
+        {
+            static void Main(string[] args)
+            {
+                Library library = new Library();
+
+                // Добавяне на няколко примерни книги
+                library.AddBook(new Book("12345", "Завръщане към Бъдещето", "Робърт Земекис", 1985));
+                library.AddBook(new Book("67890", "Грозде на гнева", "Джон Стайнбек", 1939));
+                library.AddBook(new Book("13579", "Война и мир", "Лев Толстой", 1869));
+
+                // Извеждане на информация за всички книги
+                Console.WriteLine("Всички книги в библиотеката:");
+                library.DisplayAllBooks();
+
+                // Търсене на книга по заглавие
+                string searchTitle = "Война и мир";
+                Console.WriteLine($"\nТърсене на книга по заглавие '{searchTitle}':");
+                Book foundByTitle = library.FindBookByTitle(searchTitle);
+                if (foundByTitle != null)
+                {
+                    Console.WriteLine($"Намерена книга: {foundByTitle.Title} от {foundByTitle.Author}, издадена през {foundByTitle.Year}");
+                }
+                else
+                {
+                    Console.WriteLine("Книгата не е намерена.");
+                }
+                // Търсене на книга по автор
+                string searchAuthor = "Джон Стайнбек";
+                Console.WriteLine($"\nТърсене на книга по автор '{searchAuthor}':");
+                Book foundByAuthor = library.FindBookByAuthor(searchAuthor);
+                if (foundByAuthor != null)
+                {
+                    Console.WriteLine($"Намерена книга: {foundByAuthor.Title} от {foundByAuthor.Author}, издадена през {foundByAuthor.Year}");
+                }
+                else
+                {
+                    Console.WriteLine("Книгата не е намерена.");
+                }
+                // Изтриване на книга по ISBN
+                string isbnToDelete = "12345";
+                Console.WriteLine($"\nИзтриване на книга с ISBN '{isbnToDelete}':");
+                library.RemoveBook(isbnToDelete);
+                Console.WriteLine("Книгата е успешно изтрита от библиотеката.");
+
+                Console.ReadLine();
+            }
+        }
+        // Клас за книга
+        class Book
+        {
+            public string ISBN { get; set; }
+            public string Title { get; set; }
+            public string Author { get; set; }
+            public int Year { get; set; }
+            public Book(string isbn, string title, string author, int year)
+            {
+                ISBN = isbn;
+                Title = title;
+                Author = author;
+                Year = year;
+            }
+        }
+        // Клас за библиотека
+        class Library
+        {
+            private List<Book> books;
+            public Library()
+            {
+                books = new List<Book>();
+            }
+            public void AddBook(Book book)
+            {
+                books.Add(book);
+            }
+            public void RemoveBook(string isbn)
+            {
+                Book bookToRemove = books.FirstOrDefault(book => book.ISBN == isbn);
+                if (bookToRemove != null)
+                {
+                    books.Remove(bookToRemove);
+                }
+            }
+            public Book FindBookByTitle(string title)
+            {
+                return books.FirstOrDefault(book => book.Title == title);
+            }
+            public Book FindBookByAuthor(string author)
+            {
+                return books.FirstOrDefault(book => book.Author == author);
+            }
+            public void DisplayAllBooks()
+            {
+                foreach (var book in books)
+                {
+                    Console.WriteLine($"ISBN: {book.ISBN}, Заглавие: {book.Title}, Автор: {book.Author}, Година: {book.Year}");
+                }
+            }
+        }
+    }
+
+---------------------------------------------------------
+ex.04 DDS
+---------------------------------------------------------
+  using System;
+
+namespace ex._04_DDS
+{
+        class Program
+        {
+            static void Main(string[] args)
+            {
+                Console.WriteLine("Добре дошли в аптеката!");
+                Console.WriteLine("Моля, въведете данните за вашето лекарство:");
+
+                // Въвеждане на данни за лекарството от потребителя
+                Console.Write("Име на лекарство: ");
+                string medicineName = Console.ReadLine();
+
+                Console.Write("Доза: ");
+                string dose = Console.ReadLine();
+
+                Console.Write("Продуктов код: ");
+                string productCode = Console.ReadLine();
+
+                // Създаване на обект от клас Medicine с въведените данни
+                Medicine medicine = new Medicine(medicineName, dose, productCode);
+
+                // Извеждане на информация за въведеното лекарство
+                Console.WriteLine("\nИнформация за въведеното лекарство:");
+                Console.WriteLine($"Име на лекарството: {medicine.MedicineName}");
+                Console.WriteLine($"Доза: {medicine.Dose}");
+                Console.WriteLine($"Продуктов код: {medicine.ProductCode}");
+
+                Console.ReadLine();
+            }
+        }
+
+        // Клас за лекарство
+        class Medicine
+        {
+            public string MedicineName { get; set; }
+            public string Dose { get; set; }
+            public string ProductCode { get; set; }
+
+            // Конструктор за създаване на обект от тип Medicine
+            public Medicine(string medicineName, string dose, string productCode)
+            {
+                MedicineName = medicineName;
+                Dose = dose;
+                ProductCode = productCode;
+            }
+        }
+    }
+
+---------------------------------------------------------
+ex.05 GUI prototyping
+---------------------------------------------------------
+  using System;
+
+namespace ex._05_GUI_prototyping
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine("Добре дошли! Моля, въведете вашите данни:");
+
+            // Създаване на потребителски обект
+            User user = new User();
+
+            // Извикване на методите за въвеждане на данни
+            EnterName(user);
+            EnterAge(user);
+
+            // Показване на въведените данни
+            DisplayUserData(user);
+
+            Console.ReadLine();
+        }
+        static void EnterName(User user)
+        {
+            Console.Write("Въведете вашето име: ");
+            user.Name = Console.ReadLine();
+        }
+        static void EnterAge(User user)
+        {
+            Console.Write("Въведете вашата възраст: ");
+            string ageInput = Console.ReadLine();
+
+            // Преобразуване на възрастта в цяло число
+            int age;
+            if (int.TryParse(ageInput, out age))
+            {
+                user.Age = age;
+            }
+            else
+            {
+                Console.WriteLine("Грешка при въвеждането на възрастта. Позволени са само числа.");
+                // Рекурсивно повторно въвеждане на възрастта
+                EnterAge(user);
+            }
+        }
+        static void DisplayUserData(User user)
+        {
+            Console.WriteLine("\nВашите въведени данни са:");
+            Console.WriteLine($"Име: {user.Name}");
+            Console.WriteLine($"Възраст: {user.Age}");
+        }
+    }
+    // Клас за представяне на потребителски данни
+    class User
+    {
+        public string Name { get; set; }
+        public int Age { get; set; }
+    }
+}
+
+  
