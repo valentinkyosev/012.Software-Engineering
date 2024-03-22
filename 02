@@ -1,0 +1,250 @@
+------------------------------
+ex.01 Unit_test
+------------------------------
+using System;
+
+namespace ex._01_Unit_test
+{
+    public class CalculatorTests
+    {
+        public void TestAddition()
+        {
+            // Arrange
+            Calculator calculator = new Calculator();
+
+            // Act
+            int result = calculator.Add(3, 5);
+
+            // Assert
+            if (result == 8)
+            {
+                Console.WriteLine("TestAddition Passed!");
+            }
+            else
+            {
+                Console.WriteLine("TestAddition Failed!");
+            }
+        }
+
+        public void TestSubtraction()
+        {
+            // Arrange
+            Calculator calculator = new Calculator();
+
+            // Act
+            int result = calculator.Subtract(10, 4);
+
+            // Assert
+            if (result == 6)
+            {
+                Console.WriteLine("TestSubtraction Passed!");
+            }
+            else
+            {
+                Console.WriteLine("TestSubtraction Failed!");
+            }
+        }
+    }
+
+    public class Calculator
+    {
+        public int Add(int a, int b)
+        {
+            return a + b;
+        }
+
+        public int Subtract(int a, int b)
+        {
+            return a - b;
+        }
+    }
+
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            CalculatorTests tests = new CalculatorTests();
+
+            // Run tests
+            tests.TestAddition();
+            tests.TestSubtraction();
+        }
+    }
+}
+-----------------------------
+ex.02 Regression_testing
+-----------------------------
+using System;
+
+namespace ex._02_Regression_testing
+{
+    public class CalculatorTests
+    {
+        public void TestAddition()
+        {
+            // Arrange
+            Calculator calculator = new Calculator();
+
+            // Act
+            int result = calculator.Add(3, 5);
+
+            // Assert
+            if (result == 8)
+            {
+                Console.WriteLine("TestAddition Passed!");
+            }
+            else
+            {
+                Console.WriteLine("TestAddition Failed!");
+            }
+        }
+
+        public void TestSubtraction()
+        {
+            // Arrange
+            Calculator calculator = new Calculator();
+
+            // Act
+            int result = calculator.Subtract(10, 4);
+
+            // Assert
+            if (result == 6)
+            {
+                Console.WriteLine("TestSubtraction Passed!");
+            }
+            else
+            {
+                Console.WriteLine("TestSubtraction Failed!");
+            }
+        }
+
+        public void TestMultiplication()
+        {
+            // Arrange
+            Calculator calculator = new Calculator();
+
+            // Act
+            int result = calculator.Multiply(2, 5);
+
+            // Assert
+            if (result == 10)
+            {
+                Console.WriteLine("TestMultiplication Passed!");
+            }
+            else
+            {
+                Console.WriteLine("TestMultiplication Failed!");
+            }
+        }
+    }
+
+    public class Calculator
+    {
+        public int Add(int a, int b)
+        {
+            return a + b;
+        }
+
+        public int Subtract(int a, int b)
+        {
+            return a - b;
+        }
+
+        public int Multiply(int a, int b)
+        {
+            return a * b;
+        }
+    }
+
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            CalculatorTests tests = new CalculatorTests();
+
+            // Run tests
+            tests.TestAddition();
+            tests.TestSubtraction();
+            tests.TestMultiplication();
+        }
+    }
+}
+-----------------------------------------
+ex.03
+-----------------------------------------
+using System;
+
+namespace ex._03_Mocking
+{
+    public interface ILogger
+    {
+        void Log(string message);
+    }
+
+    public class MyLogger : ILogger
+    {
+        public void Log(string message)
+        {
+            Console.WriteLine("Logged message: " + message);
+        }
+    }
+
+    public class MyClass
+    {
+        private readonly ILogger _logger;
+
+        public MyClass(ILogger logger)
+        {
+            _logger = logger;
+        }
+
+        public void DoSomething()
+        {
+            _logger.Log("Doing something...");
+        }
+    }
+}
+----------------------------------------
+ex.04
+using System;
+
+namespace ex._04_Integration_testing
+{
+    public class Logger
+    {
+        public void Log(string message)
+        {
+            Console.WriteLine(message);
+        }
+    }
+
+    public class Calculator
+    {
+        private readonly Logger _logger;
+
+        public Calculator(Logger logger)
+        {
+            _logger = logger;
+        }
+
+        public int Add(int a, int b)
+        {
+            int result = a + b;
+            _logger.Log($"Added {a} and {b}, result is {result}");
+            return result;
+        }
+    }
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Logger logger = new Logger();
+            Calculator calculator = new Calculator(logger);
+
+            int result = calculator.Add(5, 3);
+
+            Console.WriteLine($"Result: {result}");
+        }
+    }
+}
+
